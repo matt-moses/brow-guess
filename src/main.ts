@@ -1,5 +1,6 @@
 import './style.css';
 import { createApp } from './app.ts';
+import { registerPwa } from './pwa.ts';
 
 const root = document.querySelector<HTMLElement>('#app');
 if (root) {
@@ -9,3 +10,5 @@ if (root) {
   }
   createApp(root);
 }
+
+if (import.meta.env.PROD) void registerPwa();

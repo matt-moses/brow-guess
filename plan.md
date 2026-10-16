@@ -269,9 +269,9 @@ npm run build && (npx vite preview --port 4173 --strictPort & echo $! > "$SCRATC
 **Delivers:** An installable, offline-capable build that is correct under `/brow-guess/`, with an update toast.
 
 ### Tasks
-- [ ] Add `assets/logo.svg` and `assets/icon.svg` with original artwork, such as a stylised forehead and card.
-- [ ] Add `@vite-pwa/assets-generator`, or `sharp` in a `scripts/gen-icons.mjs`, to produce `public/icons/` with 192, 512, maskable-512, `apple-touch-icon-180`, and a favicon. Generated PNGs are committed, so CI doesn't need native deps. Add a `gen:icons` script.
-- [ ] Configure `vite-plugin-pwa` (FR-17/18/19):
+- [x] Add `assets/logo.svg` and `assets/icon.svg` with original artwork, such as a stylised forehead and card.
+- [x] Add `@vite-pwa/assets-generator`, or `sharp` in a `scripts/gen-icons.mjs`, to produce `public/icons/` with 192, 512, maskable-512, `apple-touch-icon-180`, and a favicon. Generated PNGs are committed, so CI doesn't need native deps. Add a `gen:icons` script.
+- [x] Configure `vite-plugin-pwa` (FR-17/18/19):
   - `registerType: 'prompt'` and `strategies: 'generateSW'`.
   - `globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}']`.
   - The manifest:
@@ -281,9 +281,9 @@ npm run build && (npx vite preview --port 4173 --strictPort & echo $! > "$SCRATC
     - `theme_color`/`background_color`
     - `start_url` and `scope` set to `base`
     - `icons` including `purpose: 'maskable'`
-- [ ] Add `<meta>` tags for iOS: `apple-mobile-web-app-capable`, status bar, apple-touch-icon, and `viewport-fit=cover`. All URLs go through `import.meta.env.BASE_URL` (§7.3).
-- [ ] Add `src/pwa.ts`, which uses `virtual:pwa-register` to show a "Update available — reload" toast with an accessible button that calls `updateSW(true)`.
-- [ ] Add `scripts/check-dist.mjs` (wired into `verify` after `build` as `check:dist`). It asserts:
+- [x] Add `<meta>` tags for iOS: `apple-mobile-web-app-capable`, status bar, apple-touch-icon, and `viewport-fit=cover`. All URLs go through `import.meta.env.BASE_URL` (§7.3).
+- [x] Add `src/pwa.ts`, which uses `virtual:pwa-register` to show a "Update available — reload" toast with an accessible button that calls `updateSW(true)`.
+- [x] Add `scripts/check-dist.mjs` (wired into `verify` after `build` as `check:dist`). It asserts:
   - The manifest exists and parses, with `start_url` and `scope` equal to `BASE_PATH`, `display` set to `fullscreen`, `orientation` set to `landscape`, and the 192, 512, and maskable icons listed, with the files present in `dist/`.
   - The PNG dimensions match the declared sizes, read from the IHDR header with no deps.
   - `sw.js` exists and its precache manifest lists `index.html`, every `dist/assets/*.js|css`, and the icons.
@@ -301,6 +301,8 @@ for p in '' manifest.webmanifest sw.js icons/icon-192.png; do curl -sf "http://l
 kill %1
 ```
 **Done when:** `check-dist` passes for both `/` and `/brow-guess/`, and every curl succeeds with no `FAIL` lines. The offline behaviour itself is checked in CI by Playwright in P6.
+
+**Evidence:** `npm run verify` exits 0 (22 test files, 235 tests passed); `check-dist: OK (base=/)` and `check-dist: OK (base=/brow-guess/)`; all 6 sub-path curls ok under `vite preview`; assets JS+CSS gzip 17.2 KB (budget 150 KB) — 2026-10-16
 
 ---
 

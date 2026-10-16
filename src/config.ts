@@ -2,6 +2,13 @@
 
 export const APP_NAME = 'Brow Guess' as const;
 
+/** One-line pitch used by the web app manifest and the description meta tag. */
+export const APP_DESCRIPTION =
+  'A party word game: hold the phone to your forehead, tilt down when you get it, tilt up to pass.';
+
+/** Matches --bg in style.css; used for the manifest theme/background and the theme-color meta. */
+export const THEME_COLOR = '#0b0b12';
+
 /** Round length in seconds. */
 export const ROUND_SECONDS = 60;
 

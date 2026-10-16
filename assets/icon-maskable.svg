@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>Brow Guess</title>
+  <rect width="512" height="512" fill="#0b0b12"/>
+  <g transform="translate(256 256) scale(0.7) translate(-256 -256)">
+  <g transform="rotate(-8 256 180)">
+    <rect x="166" y="62" width="180" height="236" rx="26" fill="#ffd400"/>
+    <path d="M216 150a40 40 0 1 1 58 36c-12 7-18 14-18 30v8" fill="none" stroke="#0b0b12" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="256" cy="262" r="17" fill="#0b0b12"/>
+  </g>
+  <path d="M110 352q50-36 104-8M298 344q54-28 104 8" fill="none" stroke="#ffffff" stroke-width="28" stroke-linecap="round"/>
+  <ellipse cx="166" cy="410" rx="44" ry="34" fill="#ffffff"/>
+  <ellipse cx="346" cy="410" rx="44" ry="34" fill="#ffffff"/>
+  <circle cx="172" cy="398" r="17" fill="#0b0b12"/>
+  <circle cx="340" cy="398" r="17" fill="#0b0b12"/>
+  </g>
+</svg>
