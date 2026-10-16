@@ -1,6 +1,6 @@
 /** Central tunables. Game logic takes these via injected config so tests can override them. */
 
-export const APP_NAME = 'Forehead Frenzy' as const;
+export const APP_NAME = 'Brow Guess' as const;
 
 /** Round length in seconds. */
 export const ROUND_SECONDS = 60;

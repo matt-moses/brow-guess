@@ -1,6 +1,6 @@
-# Execution Plan: Forehead Frenzy
+# Execution Plan: Brow Guess
 
-Source: [`prd.md`](./prd.md). Target: a static PWA (vanilla TypeScript and Vite) deployed to GitHub Pages at `https://matt-moses.github.io/headsup/`.
+Source: [`prd.md`](./prd.md). Target: a static PWA (vanilla TypeScript and Vite) deployed to GitHub Pages at `https://matt-moses.github.io/brow-guess/`.
 
 ## Ground rules (apply to every phase)
 
@@ -45,14 +45,14 @@ P0 Scaffold ─┬─► P1 Game core ─┬─► P3 Device adapters ─┐
 - [x] Add Vitest with the `jsdom` environment available per file, `@vitest/coverage-v8`, and a `tests/` dir.
 - [x] Add `package.json` scripts: `dev`, `build`, `preview`, `lint`, `format`, `format:check`, `typecheck`, `test`, `test:watch`, `coverage`, and `verify`.
 - [x] Add `.nvmrc` (`22`), `engines.node >=20`, `.gitignore`, and `.editorconfig`.
-- [x] Create `src/config.ts` with `APP_NAME = 'Forehead Frenzy'`, `ROUND_SECONDS = 60`, `TILT_TRIGGER_DEG = 35`, `TILT_REARM_DEG = 15`, `TILT_COOLDOWN_MS = 500`, `FEEDBACK_MS = 600`, `READY_HOLD_MS = 1000`, `SENSOR_TIMEOUT_MS = 1500`, `FINAL_TICK_SECONDS = 10`, and `COUNTDOWN_FROM = 3`.
+- [x] Create `src/config.ts` with `APP_NAME = 'Brow Guess'`, `ROUND_SECONDS = 60`, `TILT_TRIGGER_DEG = 35`, `TILT_REARM_DEG = 15`, `TILT_COOLDOWN_MS = 500`, `FEEDBACK_MS = 600`, `READY_HOLD_MS = 1000`, `SENSOR_TIMEOUT_MS = 1500`, `FINAL_TICK_SECONDS = 10`, and `COUNTDOWN_FROM = 3`.
 - [x] Add a `src/main.ts` stub that renders `APP_NAME`.
 - [x] Add a sanity test `tests/config.test.ts` that checks the constants exist and are sane, for example `REARM < TRIGGER`.
 
 ### Check your work (autonomous)
 ```bash
 npm ci && npm run verify                          # all gates green
-BASE_PATH=/headsup/ npm run build && grep -q '/headsup/assets/' dist/index.html
+BASE_PATH=/brow-guess/ npm run build && grep -q '/brow-guess/assets/' dist/index.html
 npm run lint -- --max-warnings=0
 ```
 **Done when:** All three commands exit 0 and the sanity test runs (Vitest reports ≥1 test).
@@ -138,7 +138,7 @@ grep -rnE 'document|window|navigator' src/game && exit 1 || true   # purity guar
 - [x] `scripts/check-trademarks.sh` (AC-7):
   - Greps the repo, excluding `node_modules`, `dist`, `.git`, `prd.md`, and `plan.md`, case-insensitively for `heads ?up`, `warner`, `\bWB\b`, and `ellen`.
   - Exits non-zero on a hit.
-  - Allow-list the git remote/base-path references to the `headsup` slug only in deploy config, if needed.
+  - Also blocks the rejected names "Forehead Frenzy" and "Tilt & Tell", which existing games already use.
   - Add it to `verify` as `npm run check:brand`.
 
 ### Check your work (autonomous)
@@ -255,7 +255,7 @@ npx vitest run tests/device --coverage --coverage.include='src/device/**' --cove
 npm run verify
 npx vitest run tests/flow tests/ui
 npm run build && (npx vite preview --port 4173 --strictPort & echo $! > "$SCRATCH/preview.pid") \
-  && sleep 2 && curl -sf http://localhost:4173/ | grep -q 'Forehead Frenzy'; kill $(cat "$SCRATCH/preview.pid")
+  && sleep 2 && curl -sf http://localhost:4173/ | grep -q 'Brow Guess'; kill $(cat "$SCRATCH/preview.pid")
 ```
 **Done when:** Verify is green, every flow test passes, and the preview serves the app shell.
 
@@ -266,7 +266,7 @@ npm run build && (npx vite preview --port 4173 --strictPort & echo $! > "$SCRATC
 ## Phase 5: PWA, icons, base path
 
 **Depends on:** P4.
-**Delivers:** An installable, offline-capable build that is correct under `/headsup/`, with an update toast.
+**Delivers:** An installable, offline-capable build that is correct under `/brow-guess/`, with an update toast.
 
 ### Tasks
 - [ ] Add `assets/logo.svg` and `assets/icon.svg` with original artwork, such as a stylised forehead and card.
@@ -293,14 +293,14 @@ npm run build && (npx vite preview --port 4173 --strictPort & echo $! > "$SCRATC
 ### Check your work (autonomous)
 ```bash
 npm run verify                                       # includes check:dist for BASE_PATH=/
-BASE_PATH=/headsup/ npm run build && BASE_PATH=/headsup/ node scripts/check-dist.mjs
+BASE_PATH=/brow-guess/ npm run build && BASE_PATH=/brow-guess/ node scripts/check-dist.mjs
 # serve under the sub-path and fetch the key assets
-BASE_PATH=/headsup/ npx vite preview --port 4173 --strictPort &
+BASE_PATH=/brow-guess/ npx vite preview --port 4173 --strictPort &
 sleep 2
-for p in '' manifest.webmanifest sw.js icons/icon-192.png; do curl -sf "http://localhost:4173/headsup/$p" >/dev/null || echo "FAIL $p"; done
+for p in '' manifest.webmanifest sw.js icons/icon-192.png; do curl -sf "http://localhost:4173/brow-guess/$p" >/dev/null || echo "FAIL $p"; done
 kill %1
 ```
-**Done when:** `check-dist` passes for both `/` and `/headsup/`, and every curl succeeds with no `FAIL` lines. The offline behaviour itself is checked in CI by Playwright in P6.
+**Done when:** `check-dist` passes for both `/` and `/brow-guess/`, and every curl succeeds with no `FAIL` lines. The offline behaviour itself is checked in CI by Playwright in P6.
 
 ---
 
@@ -313,7 +313,7 @@ kill %1
 - [ ] Add `@playwright/test` as a devDependency. Add a `test:e2e` script that runs only in CI or on demand; it is not part of `verify`.
 - [ ] `playwright.config.ts`:
   - Project `mobile-landscape`: a Pixel 7 profile with a landscape viewport, `hasTouch`, and `isMobile`.
-  - `webServer`: `npm run preview -- --port 4173 --strictPort` with `BASE_PATH=/headsup/`, so the real sub-path is exercised.
+  - `webServer`: `npm run preview -- --port 4173 --strictPort` with `BASE_PATH=/brow-guess/`, so the real sub-path is exercised.
 - [ ] `e2e/smoke.spec.ts` (PRD §8):
   - Use `addInitScript` to stub `DeviceOrientationEvent.requestPermission → 'granted'` and `screen.orientation` (angle 90). Expose a `window.__tilt(beta,gamma,alpha)` that dispatches a `DeviceOrientationEvent`.
   - Call `page.clock.install()`.
@@ -353,8 +353,8 @@ kill %1
 - [ ] Push to `main`.
 
 ### ⚠️ Blockers that need the user (flag, don't work around)
-1. **The repo is private.** Pages needs a paid plan, or the repo must be made public (PRD §11). Check with `gh api repos/matt-moses/headsup --jq .private` and `gh api user --jq .plan.name`. Ask the user before changing visibility.
-2. **The Pages source must be "GitHub Actions".** This can be done with `gh api -X POST repos/matt-moses/headsup/pages -f build_type=workflow`, but only with user approval.
+1. ~~**The repo is private.**~~ Resolved 2026-10-16: the repo is public and renamed to `brow-guess`. Pushing is currently blocked because the Claude GitHub App isn't installed on the renamed repo, so the user must add it under Repository access. Commits stay local until then. Original note: Pages needs a paid plan, or the repo must be made public (PRD §11). Check with `gh api repos/matt-moses/brow-guess --jq .private` and `gh api user --jq .plan.name`. Ask the user before changing visibility.
+2. **The Pages source must be "GitHub Actions".** This can be done with `gh api -X POST repos/matt-moses/brow-guess/pages -f build_type=workflow`, but only with user approval.
 3. The PRD lists the remote as `git@github.com:…`, while the current `origin` is HTTPS. Either works; use whichever authenticates.
 
 ### Check your work (autonomous)
@@ -363,8 +363,8 @@ npm run verify
 "$SCRATCH/actionlint" .github/workflows/deploy.yml
 git push origin main
 gh run watch "$(gh run list --workflow deploy.yml --branch main --limit 1 --json databaseId -q '.[0].databaseId')" --exit-status
-curl -sf https://matt-moses.github.io/headsup/ | grep -q 'Forehead Frenzy'
-curl -sf https://matt-moses.github.io/headsup/manifest.webmanifest | grep -q '"start_url": *"/headsup/"'
+curl -sf https://matt-moses.github.io/brow-guess/ | grep -q 'Brow Guess'
+curl -sf https://matt-moses.github.io/brow-guess/manifest.webmanifest | grep -q '"start_url": *"/brow-guess/"'
 # PR path: open a throwaway PR and confirm check runs while deploy is skipped
 gh pr create --draft --title 'ci: PR check dry-run' --body '...' && gh pr checks --watch
 ```

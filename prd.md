@@ -1,8 +1,8 @@
-# PRD: Forehead Frenzy — Web Party Guessing Game
+# PRD: Brow Guess — Web Party Guessing Game
 
 ## 1. Summary
 
-Forehead Frenzy is a party guessing game that runs on a phone's browser. One player holds the phone to their forehead. The rest of the group sees a word on the screen and gives clues. The player tilts the phone **down** when they guess correctly and **up** to pass. A round lasts 60 seconds and ends on a results screen.
+Brow Guess is a party guessing game that runs on a phone's browser. One player holds the phone to their forehead. The rest of the group sees a word on the screen and gives clues. The player tilts the phone **down** when they guess correctly and **up** to pass. A round lasts 60 seconds and ends on a results screen.
 
 The game is a static, installable, offline-capable PWA. It is built with vanilla TypeScript and Vite and deployed to **GitHub Pages** by GitHub Actions.
 
@@ -104,14 +104,14 @@ A **Quit** button or gesture is available during the round, for example a tap in
 ### 6.6 PWA
 
 - **FR-17**: Use `vite-plugin-pwa` to generate:
-  - **Manifest**: name "Forehead Frenzy", `display: fullscreen` (`standalone` fallback), `orientation: landscape`, theme and background colors, and icons at 192, 512, and maskable sizes.
+  - **Manifest**: name "Brow Guess", `display: fullscreen` (`standalone` fallback), `orientation: landscape`, theme and background colors, and icons at 192, 512, and maskable sizes.
   - **Service worker** (Workbox `generateSW`): precaches all built assets, including deck JSON (or decks bundled into JS), so the game is fully playable offline after the first load.
 - **FR-18**: The manifest `start_url` and `scope` must respect the GitHub Pages base path.
 - **FR-19**: Show a small "Update available — reload" toast when a new service worker is waiting. Use the `prompt` registerType.
 
 ### 6.7 Branding & UI
 
-- **FR-20**: The app name "Forehead Frenzy" is defined in a single config constant.
+- **FR-20**: The app name "Brow Guess" is defined in a single config constant.
 - **FR-21**: Bold, high-contrast visuals. The word text uses a large display font: system font stack or a self-hosted font. No CDN fonts, so offline play works.
   - Text auto-fits so long entries ("Brushing your teeth") stay on screen at the largest possible size.
 - **FR-22**: Original icon and simple logo, made as SVG and generated to PNG sizes.
@@ -161,7 +161,7 @@ tests/ (unit) , e2e/ (Playwright)
 
 ### 7.3 Base Path
 
-- The repo is `matt-moses/headsup`, so the production URL is `https://matt-moses.github.io/headsup/` and `base` resolves to `/headsup/`.
+- The repo is `matt-moses/brow-guess`, so the production URL is `https://matt-moses.github.io/brow-guess/` and `base` resolves to `/brow-guess/`.
 - Set Vite `base` from an env var, `BASE_PATH`, defaulting to `/`, rather than hard-coding it. This keeps a later repo rename painless.
 - The Pages workflow sets `BASE_PATH=/${{ github.event.repository.name }}/`.
 - All asset, manifest, and service-worker URLs derive from `import.meta.env.BASE_URL`.
@@ -183,7 +183,7 @@ GitHub Actions workflow `.github/workflows/deploy.yml`:
 - **Triggers**: push to `main`, pull requests (checks only), and `workflow_dispatch`.
 - **Job `check`**: `npm ci` → `npm run lint` → `npm run format:check` → `npm run typecheck` → `npm test` (Vitest) → `npm run build` → Playwright smoke test (`npx playwright install --with-deps chromium`) against `vite preview`.
 - **Job `deploy`**: runs on `main` only and needs `check`. It uses `actions/configure-pages`, `actions/upload-pages-artifact` (`dist/`), and `actions/deploy-pages`. It needs the `pages: write` and `id-token: write` permissions.
-- Remote: `git@github.com:matt-moses/headsup.git` (currently private, see §11).
+- Remote: `https://github.com/matt-moses/brow-guess.git` (public).
 - Pages must be set to "GitHub Actions" source in the repo settings. This is a one-time manual step and will be documented in the README.
 
 ### Playwright smoke test scope
@@ -227,8 +227,8 @@ GitHub Actions workflow `.github/workflows/deploy.yml`:
 | iOS can't lock orientation or go fullscreen in Safari | "Rotate device" overlay. Recommend Add to Home Screen. Read orientation from `screen.orientation`/`matchMedia`. |
 | Sensor axis conventions differ across devices | Normalization isolated in one module, calibration at round start, thresholds in config. |
 | Playwright is too heavy for the Pi | Run it only in CI. Locally, unit tests are the main loop. |
-| Repo `matt-moses/headsup` is private | GitHub Pages on a private repo needs a paid plan (Pro/Team/Enterprise). On Free, the repo must be made public before Pages will deploy. The published site is publicly reachable either way, unless the account is Enterprise Cloud with private Pages. |
-| Repo/URL slug "headsup" echoes the WB trademark | Fine for development. Consider renaming the repo to `forehead-frenzy` before any public launch. `BASE_PATH` means the rename needs no code changes. |
+| ~~Repo is private~~ (resolved 2026-10-16: made public) | GitHub Pages on a private repo needs a paid plan. The repo is now public, so Pages works on Free. |
+| ~~Repo slug echoed the WB trademark~~ (resolved 2026-10-16) | Repo renamed to `brow-guess`. Name candidates "Forehead Frenzy" and "Tilt & Tell" were rejected because existing party games already use them. `BASE_PATH` meant the rename needed no code changes. |
 | Stale service worker serves an old version | Prompt-style update toast (FR-19). |
 
 ## 12. Open Items (deferred, not blocking MVP)

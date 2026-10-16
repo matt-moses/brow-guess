@@ -3,7 +3,7 @@ import * as config from '../src/config.ts';
 
 describe('config', () => {
   it('names the app', () => {
-    expect(config.APP_NAME).toBe('Forehead Frenzy');
+    expect(config.APP_NAME).toBe('Brow Guess');
   });
 
   it('has positive numeric tunables', () => {
