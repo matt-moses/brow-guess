@@ -1,5 +1,5 @@
-/// <reference types="vitest/config" />
 import { defineConfig, type Plugin } from 'vite';
+import { configDefaults } from 'vitest/config';
 import { VitePWA } from 'vite-plugin-pwa';
 import { APP_DESCRIPTION, APP_NAME, THEME_COLOR } from './src/config.ts';
 
@@ -70,6 +70,8 @@ export default defineConfig({
     // Pure logic runs in node; DOM tests opt in with `// @vitest-environment jsdom`.
     environment: 'node',
     include: ['tests/**/*.test.ts'],
+    // Playwright specs (e2e/) run via `npm run test:e2e`, never under Vitest.
+    exclude: [...configDefaults.exclude, 'e2e/**'],
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts'],

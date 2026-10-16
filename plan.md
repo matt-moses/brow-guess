@@ -312,11 +312,11 @@ kill %1
 **Delivers:** `.github/workflows/deploy.yml`, `e2e/smoke.spec.ts`, `playwright.config.ts`, and `README.md`, plus a live deployment.
 
 ### Tasks
-- [ ] Add `@playwright/test` as a devDependency. Add a `test:e2e` script that runs only in CI or on demand; it is not part of `verify`.
-- [ ] `playwright.config.ts`:
+- [x] Add `@playwright/test` as a devDependency. Add a `test:e2e` script that runs only in CI or on demand; it is not part of `verify`.
+- [x] `playwright.config.ts`:
   - Project `mobile-landscape`: a Pixel 7 profile with a landscape viewport, `hasTouch`, and `isMobile`.
   - `webServer`: `npm run preview -- --port 4173 --strictPort` with `BASE_PATH=/brow-guess/`, so the real sub-path is exercised.
-- [ ] `e2e/smoke.spec.ts` (PRD §8):
+- [x] `e2e/smoke.spec.ts` (PRD §8):
   - Use `addInitScript` to stub `DeviceOrientationEvent.requestPermission → 'granted'` and `screen.orientation` (angle 90). Expose a `window.__tilt(beta,gamma,alpha)` that dispatches a `DeviceOrientationEvent`.
   - Call `page.clock.install()`.
   - Pick a deck, hold neutral, and run the clock through the hold and the countdown.
@@ -324,11 +324,11 @@ kill %1
   - Tilt up, then return to neutral.
   - `page.clock.runFor(61_000)`.
   - Assert the results show score `1`, with one ✓ row and one ✗ row.
-- [ ] `e2e/offline.spec.ts` (AC-5):
+- [x] `e2e/offline.spec.ts` (AC-5):
   - Load the app, then wait for `navigator.serviceWorker.ready` and SW control (reload once).
   - `context.setOffline(true)`, then reload.
   - Assert the deck grid renders and a deck can be started.
-- [ ] `.github/workflows/deploy.yml` (§8):
+- [x] `.github/workflows/deploy.yml` (§8):
   - Triggers: `push: main`, `pull_request`, and `workflow_dispatch`.
   - Concurrency group `pages`.
   - **check job**:
@@ -342,8 +342,8 @@ kill %1
     - Permissions `pages: write` and `id-token: write`, with environment `github-pages`.
     - `configure-pages`, then `upload-pages-artifact` (`dist/`), then `deploy-pages`.
     - The build is done once in `check` and uploaded there, so deploy ships the exact tested artifact.
-- [ ] Lint the workflow locally with `actionlint`. It is a single static binary with an arm64 release, downloaded to the scratchpad.
-- [ ] `README.md` (AC-8):
+- [x] Lint the workflow locally with `actionlint`. It is a single static binary with an arm64 release, downloaded to the scratchpad.
+- [x] `README.md` (AC-8):
   - Local dev, including `npm run dev -- --host` for LAN testing.
   - The iOS motion-sensor HTTPS caveat, with the `@vitejs/plugin-basic-ssl` or tunnel options.
   - The `?sim` desktop simulator.
@@ -374,6 +374,8 @@ gh pr create --draft --title 'ci: PR check dry-run' --body '...' && gh pr checks
 - The `check` and `deploy` jobs are green on `main`, including both Playwright specs.
 - The live URL serves the app and the manifest.
 - A PR run shows `check` passing and `deploy` skipped.
+
+**Evidence (local, 2026-10-16):** `npm run verify` green (Test Files 22 passed, Tests 235 passed; check-dist OK); `npx tsc --noEmit -p .` clean incl. e2e + playwright.config.ts; actionlint 1.7.12 (linux arm64): 0 findings; `npx playwright test --list`: 2 tests in 2 files; e2e ran locally on the Pi (chromium-headless-shell, missing system libs extracted to the scratchpad via non-root `apt-get download`) against a `BASE_PATH=/brow-guess/` build: 2 passed in each of two consecutive runs. **Pending:** push, CI green run, Pages live check, PR dry-run — blocked on GitHub App access to matt-moses/brow-guess.
 
 If a CI-only Playwright failure occurs, download the report artifact with `gh run download`, fix it, and push again. Repeat until green.
 
