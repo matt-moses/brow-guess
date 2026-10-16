@@ -202,15 +202,15 @@ npx vitest run tests/device --coverage --coverage.include='src/device/**' --cove
 **Delivers:** A playable app in the browser. All screens are wired through an in-memory router with no History API (§7.4). The whole user flow from PRD §5 is covered by jsdom integration tests.
 
 ### Tasks
-- [ ] **`src/router.ts`**: `show(screen, props)`. Each screen is `{mount(root, props, ctx) → cleanup}`. The router guarantees the previous screen's cleanup runs, which removes listeners, timers, and RAF loops.
-- [ ] **`src/app.ts`**: a controller that owns the game session and wires the device adapters to the screens. Dependencies are injected so tests can pass fakes.
-- [ ] **Screens** (`src/screens/`):
-  - [ ] `home`: a deck grid of `<button>` cards with emoji, title, and description, using `aria-label` and a deck colour. It remembers the last deck in `localStorage`, wrapped in try/catch. The tap handler runs, in this order and **synchronously first**: `requestMotionPermission()`, `unlockAudio()`, `enter()` fullscreen, `lockLandscape()`, and `wakelock.acquire()`.
-  - [ ] `permission`: the denied path, with iOS reload instructions plus the Settings path for older iOS.
-  - [ ] `unsupported`: "Motion sensors not available — play on a phone" (FR-16), with a Back button.
-  - [ ] `ready`: "Place on forehead". It shows a rotate-device overlay in portrait and advances after `READY_HOLD_MS` in upright landscape.
-  - [ ] `countdown`: 3‑2‑1 with a beep and pulse on each tick. It averages pitch samples over the final ~500 ms, then calls `calibrate()`.
-  - [ ] `round`:
+- [x] **`src/router.ts`**: `show(screen, props)`. Each screen is `{mount(root, props, ctx) → cleanup}`. The router guarantees the previous screen's cleanup runs, which removes listeners, timers, and RAF loops.
+- [x] **`src/app.ts`**: a controller that owns the game session and wires the device adapters to the screens. Dependencies are injected so tests can pass fakes.
+- [x] **Screens** (`src/screens/`):
+  - [x] `home`: a deck grid of `<button>` cards with emoji, title, and description, using `aria-label` and a deck colour. It remembers the last deck in `localStorage`, wrapped in try/catch. The tap handler runs, in this order and **synchronously first**: `requestMotionPermission()`, `unlockAudio()`, `enter()` fullscreen, `lockLandscape()`, and `wakelock.acquire()`.
+  - [x] `permission`: the denied path, with iOS reload instructions plus the Settings path for older iOS.
+  - [x] `unsupported`: "Motion sensors not available — play on a phone" (FR-16), with a Back button.
+  - [x] `ready`: "Place on forehead". It shows a rotate-device overlay in portrait and advances after `READY_HOLD_MS` in upright landscape.
+  - [x] `countdown`: 3‑2‑1 with a beep and pulse on each tick. It averages pitch samples over the final ~500 ms, then calls `calibrate()`.
+  - [x] `round`:
     - The word is large and centered, with the timer in a corner.
     - A RAF loop reads `remainingMs()`.
     - Tilt events show a green "Correct!" or orange "Pass" overlay for `FEEDBACK_MS`, with sound and vibration.
@@ -219,20 +219,20 @@ npx vitest run tests/device --coverage --coverage.include='src/device/**' --cove
     - Time's up plays the buzzer, releases the wake lock, exits fullscreen, and shows results.
     - A Quit button in the top-left asks for confirmation and returns home.
     - On `visibilitychange` hidden, the round pauses and shows "Paused — tap to resume". Tapping re-runs the countdown and recalibrates (FR-10).
-  - [ ] `results`: the score, then an ordered list with ✓ in green or ✗ dimmed, plus **Play again** (same deck, new shuffle) and **Choose deck**.
-- [ ] **`src/ui/autofit.ts`** (FR-21): binary-search the font size so the text fits its container. Measurement is injected, so it can be tested.
-- [ ] **CSS**:
+  - [x] `results`: the score, then an ordered list with ✓ in green or ✗ dimmed, plus **Play again** (same deck, new shuffle) and **Choose deck**.
+- [x] **`src/ui/autofit.ts`** (FR-21): binary-search the font size so the text fits its container. Measurement is injected, so it can be tested.
+- [x] **CSS**:
   - Custom properties for the theme.
   - A system display font stack, with no CDN.
   - High contrast.
   - `@media (prefers-reduced-motion: reduce)` disables the flash animations (FR-23).
   - Visible focus rings.
-- [ ] **Dev-only sensor simulator**: when `?sim` is in the URL in dev, keyboard arrows dispatch synthetic orientation events. This makes manual desktop checks possible and is tree-shaken from prod by `import.meta.env.DEV`.
+- [x] **Dev-only sensor simulator**: when `?sim` is in the URL in dev, keyboard arrows dispatch synthetic orientation events. This makes manual desktop checks possible and is tree-shaken from prod by `import.meta.env.DEV`.
 
 ### Tests
-- [ ] `tests/ui/autofit.test.ts`: a long entry gets a smaller size than a short one; the result is always within [min, max].
-- [ ] `tests/flow/*.test.ts` (jsdom, fake timers plus fake clock, `fakeDevice` helper):
-  - [ ] **Happy path**:
+- [x] `tests/ui/autofit.test.ts`: a long entry gets a smaller size than a short one; the result is always within [min, max].
+- [x] `tests/flow/*.test.ts` (jsdom, fake timers plus fake clock, `fakeDevice` helper):
+  - [x] **Happy path**:
     - Tap the deck.
     - Hold landscape for 1 s.
     - Count down.
@@ -240,15 +240,15 @@ npx vitest run tests/device --coverage --coverage.include='src/device/**' --cove
     - Return to 0 and wait 600 ms, which brings the next word.
     - Tilt up to −50°, which shows the Pass overlay.
     - Advance the clock to 60 s, which shows results with `1` correct, one ✓, and one ✗, in order.
-  - [ ] No next word while the phone is still tilted, even after 600 ms (AC-2).
-  - [ ] Jitter at the threshold registers one answer only.
-  - [ ] iOS denied leads to the permission screen. No events within 1.5 s leads to the unsupported screen.
-  - [ ] Portrait shows the rotate overlay and the countdown does not start.
-  - [ ] Visibility hidden mid-round pauses and stops the timer; resume re-runs the countdown and the remaining time is preserved.
-  - [ ] Quit, then confirm, returns home and all listeners are removed. Verify this by spying on `removeEventListener` counts and checking no RAF or timers remain.
-  - [ ] Play again uses the same deck with a different order (seeded RNG). Choose deck returns home.
-  - [ ] Wake lock is acquired at round start and released at time's up. The gesture handler calls `requestPermission` before any `await`.
-  - [ ] Accessibility: every deck card is a `button` with an accessible name and can be focused by tabbing.
+  - [x] No next word while the phone is still tilted, even after 600 ms (AC-2).
+  - [x] Jitter at the threshold registers one answer only.
+  - [x] iOS denied leads to the permission screen. No events within 1.5 s leads to the unsupported screen.
+  - [x] Portrait shows the rotate overlay and the countdown does not start.
+  - [x] Visibility hidden mid-round pauses and stops the timer; resume re-runs the countdown and the remaining time is preserved.
+  - [x] Quit, then confirm, returns home and all listeners are removed. Verify this by spying on `removeEventListener` counts and checking no RAF or timers remain.
+  - [x] Play again uses the same deck with a different order (seeded RNG). Choose deck returns home.
+  - [x] Wake lock is acquired at round start and released at time's up. The gesture handler calls `requestPermission` before any `await`.
+  - [x] Accessibility: every deck card is a `button` with an accessible name and can be focused by tabbing.
 
 ### Check your work (autonomous)
 ```bash
@@ -258,6 +258,8 @@ npm run build && (npx vite preview --port 4173 --strictPort & echo $! > "$SCRATC
   && sleep 2 && curl -sf http://localhost:4173/ | grep -q 'Forehead Frenzy'; kill $(cat "$SCRATCH/preview.pid")
 ```
 **Done when:** Verify is green, every flow test passes, and the preview serves the app shell.
+
+**Evidence:** `vitest run tests/flow tests/ui`: 6 files, 31 tests passed (flow: happy path, gating/jitter, permission/sensor/portrait, pause/resume, quit leak check, play again/choose deck, a11y; ui: autofit); full verify green (20 files, 229 tests); `dist/` has no simulator code; preview serves the shell — 2026-10-16
 
 ---
 
