@@ -103,3 +103,53 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # Optional, non-blocking Lighthouse audit of the production build.
+  # Scores land in the "lighthouse-report" artifact; nothing depends on this job.
+  lighthouse:
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+
+      - name: Start preview server
+        run: |
+          npx vite preview --host 127.0.0.1 --port 4173 --strictPort > preview.log 2>&1 &
+          npx --yes wait-on@8 --timeout 60000 "http://127.0.0.1:4173/${REPO}/"
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+          REPO: ${{ github.event.repository.name }}
+
+      - name: Run Lighthouse
+        run: |
+          mkdir -p lighthouse
+          npx --yes lighthouse@12 "http://127.0.0.1:4173/${REPO}/" \
+            --only-categories=performance,accessibility,best-practices \
+            --output=html --output=json --output-path=lighthouse/report \
+            --chrome-flags="--headless=new --no-sandbox"
+          node -e 'const r=require("./lighthouse/report.report.json");for(const c of Object.values(r.categories))console.log(`${c.title}: ${Math.round(c.score*100)}`)' | tee -a "$GITHUB_STEP_SUMMARY"
+        env:
+          REPO: ${{ github.event.repository.name }}
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: lighthouse/
+          retention-days: 14

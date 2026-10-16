@@ -62,6 +62,7 @@ Desktops have no orientation sensor. In dev mode only, open <http://localhost:51
 | `npm run test:watch`   | Vitest in watch mode.                                                                               |
 | `npm run coverage`     | Vitest with V8 coverage (`coverage/`).                                                              |
 | `npm run test:e2e`     | Playwright smoke and offline specs against `vite preview` (CI; see below).                          |
+| `npm run acceptance`   | Runs the automatable PRD acceptance checks and prints a PASS/FAIL/PENDING table.                    |
 | `npm run verify`       | The local gate: lint, format check, typecheck, purity check, brand check, tests, build, dist check. |
 | `npm run check:pure`   | Ensures game logic in `src/game/` stays DOM-free.                                                   |
 | `npm run check:brand`  | Fails if third-party trademarked names appear in the repo.                                          |
@@ -92,6 +93,8 @@ One-time setup: in the GitHub repo, go to **Settings → Pages → Build and dep
 
 GitHub Pages on a private repository needs a paid GitHub plan; on GitHub Free the repository must be public (this one is).
 
+**Lighthouse:** an optional `lighthouse` job (non-blocking, `continue-on-error`) audits the production build served by `vite preview` for performance, accessibility and best practices (Lighthouse 12 dropped the PWA category; installability is covered by `check-dist` and `e2e/offline.spec.ts`). Scores are printed in the job summary and the full HTML/JSON report is uploaded as the `lighthouse-report` artifact. Scores: TBD after the first CI run.
+
 **Base path:** Pages serves the site from `/<repo-name>/`. The workflow sets `BASE_PATH=/${{ github.event.repository.name }}/` for the build, so renaming the repository needs no code change. Locally `BASE_PATH` defaults to `/`.
 
 ## Project structure
@@ -121,7 +124,7 @@ scripts/                Purity, brand and dist checks; icon generator
 
 ## Manual QA checklist
 
-Run on real devices before calling a release done:
+Run on real devices before calling a release done. The full sheet with result columns per platform is in [docs/manual-qa.md](docs/manual-qa.md).
 
 - [ ] Android Chrome, in the browser: pick a deck, play a full 60 s round with tilt controls, results are correct.
 - [ ] Android Chrome, installed PWA (Install app / Add to Home screen): launches fullscreen in landscape and plays a full round.

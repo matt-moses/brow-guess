@@ -20,6 +20,12 @@ export default tseslint.config(
     },
   },
   {
+    files: ['src/**/*.ts'],
+    rules: {
+      'no-console': ['error', { allow: ['warn', 'error'] }],
+    },
+  },
+  {
     files: ['**/*.{js,mjs}'],
     ...tseslint.configs.disableTypeChecked,
   },

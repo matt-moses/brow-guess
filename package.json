@@ -22,7 +22,8 @@
     "check:pure": "bash scripts/check-pure.sh",
     "check:brand": "bash scripts/check-trademarks.sh",
     "gen:icons": "node scripts/gen-icons.mjs",
-    "check:dist": "node scripts/check-dist.mjs"
+    "check:dist": "node scripts/check-dist.mjs",
+    "acceptance": "bash scripts/acceptance.sh"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

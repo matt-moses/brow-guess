@@ -387,7 +387,7 @@ If a CI-only Playwright failure occurs, download the report artifact with `gh ru
 **Delivers:** Proof against every acceptance criterion in PRD §10, plus a short list of things only a human with a phone can confirm.
 
 ### Tasks
-- [ ] Add `scripts/acceptance.sh`, which runs the automatable criteria and prints a PASS/FAIL table:
+- [x] Add `scripts/acceptance.sh`, which runs the automatable criteria and prints a PASS/FAIL table:
 
   | AC | Automated check |
   |---|---|
@@ -400,11 +400,11 @@ If a CI-only Playwright failure occurs, download the report artifact with `gh ru
   | 7 no WB or "Heads Up!" content | `check:brand` |
   | 8 README sections | grep the README for the required headings: dev `--host`, HTTPS caveat, Pages setup, QA checklist |
 
-- [ ] Run Lighthouse (PWA and accessibility categories) **in CI** against the preview as an optional, non-blocking job. Record the scores in the README.
-- [ ] Do a cleanup pass:
+- [ ] Run Lighthouse (PWA and accessibility categories) **in CI** against the preview as an optional, non-blocking job. Record the scores in the README. _(Local part done: `lighthouse` job in deploy.yml (performance/accessibility/best-practices; Lighthouse 12 has no PWA category) uploads a report artifact; README has a TBD placeholder. Scores pending first CI run.)_
+- [x] Do a cleanup pass:
   - No `console.log` in `src`, enforced by the ESLint rule.
   - Bundle size sanity: print it in `check-dist` and warn if it is over 150 KB gzip.
-- [ ] Write `docs/manual-qa.md`, a copy of the README checklist with result columns. Hand it to the user for the real-device items:
+- [x] Write `docs/manual-qa.md`, a copy of the README checklist with result columns. Hand it to the user for the real-device items _(sheet is in `docs/manual-qa.md`; real-device run still with the user)_:
   - Android Chrome, in the browser and as an installed PWA.
   - iOS Safari, including the permission prompt and the denied path.
   - Airplane mode.
@@ -417,6 +417,8 @@ If a CI-only Playwright failure occurs, download the report artifact with `gh ru
 npm run verify && ./scripts/acceptance.sh      # all rows PASS; exits non-zero otherwise
 ```
 **Done when:** `acceptance.sh` exits 0, CI on `main` is green, and the manual QA doc has been sent to the user. Real-device sign-off is the only remaining human step.
+
+**Evidence (local, 2026-10-16):** `npm run verify` OK; `npm run acceptance` → AC1 PASS (flow + Playwright smoke), AC2 PASS, AC3 PASS, AC4 PASS, AC5 PASS (check-dist @ /brow-guess/ + Playwright offline), AC6 PENDING, AC7 PASS, AC8 PASS; exit 0 (e2e run locally with `ACCEPTANCE_E2E=1`). **Pending:** AC6 (CI run) and real-device QA.
 
 ---
 
