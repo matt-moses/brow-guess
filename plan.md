@@ -159,31 +159,31 @@ node -e "const d=require('fs').readdirSync('src/decks').filter(f=>f.endsWith('.j
 **Delivers:** `src/device/{orientation,wakelock,fullscreen,audio,haptics}.ts`. Each one uses feature detection, never throws, and is tested in jsdom with stubs.
 
 ### Tasks
-- [ ] **`orientation.ts`**:
+- [x] **`orientation.ts`**:
   - `requestMotionPermission(): Promise<'granted'|'denied'|'not-required'>` (FR-15). It must be called synchronously at the start of the gesture handler, with no `await` before it.
   - `subscribePitch(cb, {getAngle}) → unsubscribe` normalizes each event through P1.
   - `getScreenAngle()` uses `screen.orientation.angle`, then falls back to `window.orientation`, then to `matchMedia('(orientation: landscape)')`.
   - `watchForSensor(timeoutMs) → Promise<boolean>` (FR-16).
-- [ ] **`wakelock.ts`** (FR-11): `acquire()` and `release()`. It auto-re-acquires on `visibilitychange → visible` while a flag says it is wanted. It is silent when unsupported.
-- [ ] **`fullscreen.ts`** (FR-12): `enter()`, `exit()`, and `lockLandscape()`. Each is wrapped in try/catch, with vendor-prefix fallbacks for `webkitRequestFullscreen`.
-- [ ] **`audio.ts`** (FR-14):
+- [x] **`wakelock.ts`** (FR-11): `acquire()` and `release()`. It auto-re-acquires on `visibilitychange → visible` while a flag says it is wanted. It is silent when unsupported.
+- [x] **`fullscreen.ts`** (FR-12): `enter()`, `exit()`, and `lockLandscape()`. Each is wrapped in try/catch, with vendor-prefix fallbacks for `webkitRequestFullscreen`.
+- [x] **`audio.ts`** (FR-14):
   - `unlockAudio()` creates or resumes the `AudioContext`. It must be called inside the gesture.
   - `play('tick'|'correct'|'pass'|'buzzer'|'countdown')` synthesizes each sound with oscillators and gain envelopes.
   - It does nothing if no AudioContext exists.
-- [ ] **`haptics.ts`** (FR-13): `pulse(pattern)` uses `navigator.vibrate?.()`.
-- [ ] A shared `tests/helpers/fakeDevice.ts` provides:
+- [x] **`haptics.ts`** (FR-13): `pulse(pattern)` uses `navigator.vibrate?.()`.
+- [x] A shared `tests/helpers/fakeDevice.ts` provides:
   - Installable stubs for `DeviceOrientationEvent.requestPermission`, `screen.orientation`, `navigator.wakeLock`, `AudioContext`, `vibrate`, and `requestFullscreen`.
   - A `dispatchOrientation({beta,gamma,alpha})` helper.
   - This file is reused by P4.
 
 ### Tests (`tests/device/*.test.ts`, jsdom)
-- [ ] Permission: granted, denied, a thrown error (maps to denied), and the method absent (maps to `not-required`).
-- [ ] `subscribePitch`: a dispatched event reaches the callback with the normalized value; the sign flips when the angle stub changes 90 to 270; unsubscribe stops delivery.
-- [ ] `watchForSensor`: resolves `false` after the timeout with fake timers; resolves `true` when an event arrives first.
-- [ ] Wake lock: acquire calls the stub; a visibility change re-acquires; release prevents re-acquire; a missing API does not throw.
-- [ ] Fullscreen and orientation lock: rejections are swallowed; missing APIs are fine.
-- [ ] Audio: `play` before unlock is a no-op; after unlock it creates oscillator nodes on the stub; missing AudioContext is fine.
-- [ ] Haptics: calls `vibrate` when present; no throw when absent.
+- [x] Permission: granted, denied, a thrown error (maps to denied), and the method absent (maps to `not-required`).
+- [x] `subscribePitch`: a dispatched event reaches the callback with the normalized value; the sign flips when the angle stub changes 90 to 270; unsubscribe stops delivery.
+- [x] `watchForSensor`: resolves `false` after the timeout with fake timers; resolves `true` when an event arrives first.
+- [x] Wake lock: acquire calls the stub; a visibility change re-acquires; release prevents re-acquire; a missing API does not throw.
+- [x] Fullscreen and orientation lock: rejections are swallowed; missing APIs are fine.
+- [x] Audio: `play` before unlock is a no-op; after unlock it creates oscillator nodes on the stub; missing AudioContext is fine.
+- [x] Haptics: calls `vibrate` when present; no throw when absent.
 
 ### Check your work (autonomous)
 ```bash
@@ -191,6 +191,8 @@ npm run verify
 npx vitest run tests/device --coverage --coverage.include='src/device/**' --coverage.thresholds.lines=85
 ```
 **Done when:** Verify is green and device coverage is ≥85% lines.
+
+**Evidence:** `vitest run tests/device`: 6 files, 60 tests passed; `src/device/**` coverage 96.85% lines (91.04% branches); full verify green (13 files, 196 tests) — 2026-10-16
 
 ---
 
