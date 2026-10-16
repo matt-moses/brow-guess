@@ -4,7 +4,7 @@ A party word game for phones: hold the phone to your forehead, let your friends 
 
 **Play:** <https://matt-moses.github.io/brow-guess/>
 
-<a href="https://matt-moses.github.io/brow-guess/"><img src="docs/qr-live-site.svg" alt="QR code linking to https://matt-moses.github.io/brow-guess/" width="180"></a>
+<a href="https://matt-moses.github.io/brow-guess/"><img src="assets/qr-live-site.svg" alt="QR code linking to https://matt-moses.github.io/brow-guess/" width="180"></a>
 
 Scan the code with a phone camera to open the game. It's handy for passing around at a party.
 

@@ -79,6 +79,12 @@ body {
   border-color: var(--danger);
 }
 
+.btn-small {
+  font-size: 0.95rem;
+  min-height: 44px;
+  padding: 8px 18px;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -434,6 +440,34 @@ body {
 .result-mark {
   width: 1.4em;
   text-align: center;
+}
+
+/* Share footer: last thing on the results screen, deliberately quiet. */
+.results-share {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  margin: calc(var(--gap) * 2) auto 0;
+  padding-top: var(--gap);
+  border-top: 1px solid var(--surface);
+  color: var(--text-dim);
+  max-width: 480px;
+}
+
+.share-qr {
+  width: 96px;
+  height: 96px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.share-text {
+  text-align: left;
+}
+
+.share-text p {
+  margin: 0 0 8px;
 }
 
 /* --- dialog ------------------------------------------------------------- */

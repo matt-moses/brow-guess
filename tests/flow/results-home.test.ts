@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { LAST_DECK_KEY } from '../../src/app';
-import { APP_NAME, FEEDBACK_MS } from '../../src/config';
+import { APP_NAME, FEEDBACK_MS, SHARE_URL } from '../../src/config';
 import { decks } from '../../src/decks';
 import type { StorageLike } from '../../src/deps';
 import { createFlow, useFlowTimers, type Flow } from '../helpers/flow';
@@ -74,6 +74,48 @@ describe('results buttons', () => {
       'result correct',
     ]);
     expect(rows[1]?.getAttribute('aria-label')).toMatch(/: passed$/);
+  });
+});
+
+describe('results share footer', () => {
+  afterEach(() => {
+    Reflect.deleteProperty(navigator, 'share');
+    Reflect.deleteProperty(navigator, 'clipboard');
+  });
+
+  it('sits last on the screen with a QR code for the live site', async () => {
+    flow = createFlow();
+    await flow.toRound();
+    await playThreeAndFinish();
+    const main = flow.$('.screen-results');
+    expect(main?.lastElementChild?.className).toBe('results-share');
+    const qr = flow.$<HTMLImageElement>('.share-qr');
+    expect(qr?.getAttribute('src')).toBeTruthy();
+    expect(qr?.alt).toContain(SHARE_URL);
+  });
+
+  it('opens the native share sheet when there is one', async () => {
+    const share = vi.fn(() => Promise.resolve());
+    Object.defineProperty(navigator, 'share', { configurable: true, value: share });
+    flow = createFlow();
+    await flow.toRound();
+    await playThreeAndFinish();
+    flow.button('Share link').click();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(share).toHaveBeenCalledWith(expect.objectContaining({ url: SHARE_URL }));
+  });
+
+  it('copies the link when there is no share sheet', async () => {
+    const writeText = vi.fn(() => Promise.resolve());
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
+    flow = createFlow();
+    await flow.toRound();
+    await playThreeAndFinish();
+    const btn = flow.button('Share link');
+    btn.click();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(writeText).toHaveBeenCalledWith(SHARE_URL);
+    expect(btn.textContent).toBe('Link copied');
   });
 });
 

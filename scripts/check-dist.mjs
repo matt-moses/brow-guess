@@ -11,7 +11,10 @@ const dist = resolve(process.argv[2] ?? join(root, 'dist'));
 const base = process.env.BASE_PATH ?? '/';
 const GZIP_BUDGET = 150 * 1024;
 
-/** URL literals allowed in built JS: SVG/XML namespaces and Workbox's own doc links. */
+/**
+ * URL literals allowed in built JS: SVG/XML namespaces, Workbox's own doc links, and
+ * the app's public address (SHARE_URL: shared from the results screen, never fetched).
+ */
 const URL_ALLOW = [
   /^http:\/\/www\.w3\.org\//,
   // Workbox short links (bit.ly/w?-...); spelled with a class so the brand guard's
@@ -20,6 +23,7 @@ const URL_ALLOW = [
   /^https:\/\/goo\.gl\//,
   /^https:\/\/developers\.google\.com\/web\/tools\/workbox/,
   /^https:\/\/github\.com\/GoogleChrome\/workbox/,
+  /^https:\/\/matt-moses\.github\.io\/brow-guess\/$/,
 ];
 
 const failures = [];
