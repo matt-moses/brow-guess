@@ -3,6 +3,7 @@ import type { Deck } from '../decks/index.ts';
 import type { AppDeps } from '../deps.ts';
 import type { Screen } from '../router.ts';
 import { el } from '../ui/dom.ts';
+import { shareFooter } from '../ui/share.ts';
 
 export interface HomeProps {
   decks: readonly Deck[];
@@ -48,6 +49,7 @@ export const homeScreen: Screen<HomeProps, AppDeps> = {
           text: 'Pick a deck, hold the phone to your forehead, and guess!',
         }),
         grid,
+        shareFooter(),
       ),
     );
     focusTarget?.focus();

@@ -442,8 +442,8 @@ body {
   text-align: center;
 }
 
-/* Share footer: last thing on the results screen, deliberately quiet. */
-.results-share {
+/* Share footer: last thing on the home and results screens, deliberately quiet. */
+.share-footer {
   display: flex;
   gap: 16px;
   align-items: center;

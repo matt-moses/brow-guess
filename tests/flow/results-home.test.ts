@@ -88,7 +88,7 @@ describe('results share footer', () => {
     await flow.toRound();
     await playThreeAndFinish();
     const main = flow.$('.screen-results');
-    expect(main?.lastElementChild?.className).toBe('results-share');
+    expect(main?.lastElementChild?.className).toBe('share-footer');
     const qr = flow.$<HTMLImageElement>('.share-qr');
     expect(qr?.getAttribute('src')).toBeTruthy();
     expect(qr?.alt).toContain(SHARE_URL);
@@ -124,6 +124,14 @@ describe('home', () => {
     flow = createFlow();
     expect(document.title).toBe(APP_NAME);
     expect(flow.$('h1')?.textContent).toBe(APP_NAME);
+  });
+
+  it('ends with the share footer, below the deck grid', () => {
+    flow = createFlow();
+    const main = flow.$('.screen-home');
+    expect(main?.lastElementChild?.className).toBe('share-footer');
+    expect(flow.$<HTMLImageElement>('.share-qr')?.alt).toContain(SHARE_URL);
+    expect(flow.button('Share link')).toBeTruthy();
   });
 
   it('every deck card is a focusable button with an accessible name', () => {
