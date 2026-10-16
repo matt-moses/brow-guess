@@ -38,16 +38,16 @@ P0 Scaffold ─┬─► P1 Game core ─┬─► P3 Device adapters ─┐
 **Delivers:** An empty but fully wired project. Every quality gate runs and passes.
 
 ### Tasks
-- [ ] `npm create vite@latest` (vanilla-ts) into the repo root, then trim the boilerplate.
-- [ ] Set TS `strict: true`, `noUncheckedIndexedAccess`, and `noImplicitOverride`. Add a `typecheck` script (`tsc --noEmit`).
-- [ ] Set `vite.config.ts` `base` from `process.env.BASE_PATH ?? '/'` (§7.3).
-- [ ] Add ESLint flat config with typescript-eslint (type-aware), plus Prettier and `eslint-config-prettier`.
-- [ ] Add Vitest with the `jsdom` environment available per file, `@vitest/coverage-v8`, and a `tests/` dir.
-- [ ] Add `package.json` scripts: `dev`, `build`, `preview`, `lint`, `format`, `format:check`, `typecheck`, `test`, `test:watch`, `coverage`, and `verify`.
-- [ ] Add `.nvmrc` (`22`), `engines.node >=20`, `.gitignore`, and `.editorconfig`.
-- [ ] Create `src/config.ts` with `APP_NAME = 'Forehead Frenzy'`, `ROUND_SECONDS = 60`, `TILT_TRIGGER_DEG = 35`, `TILT_REARM_DEG = 15`, `TILT_COOLDOWN_MS = 500`, `FEEDBACK_MS = 600`, `READY_HOLD_MS = 1000`, `SENSOR_TIMEOUT_MS = 1500`, `FINAL_TICK_SECONDS = 10`, and `COUNTDOWN_FROM = 3`.
-- [ ] Add a `src/main.ts` stub that renders `APP_NAME`.
-- [ ] Add a sanity test `tests/config.test.ts` that checks the constants exist and are sane, for example `REARM < TRIGGER`.
+- [x] `npm create vite@latest` (vanilla-ts) into the repo root, then trim the boilerplate.
+- [x] Set TS `strict: true`, `noUncheckedIndexedAccess`, and `noImplicitOverride`. Add a `typecheck` script (`tsc --noEmit`).
+- [x] Set `vite.config.ts` `base` from `process.env.BASE_PATH ?? '/'` (§7.3).
+- [x] Add ESLint flat config with typescript-eslint (type-aware), plus Prettier and `eslint-config-prettier`.
+- [x] Add Vitest with the `jsdom` environment available per file, `@vitest/coverage-v8`, and a `tests/` dir.
+- [x] Add `package.json` scripts: `dev`, `build`, `preview`, `lint`, `format`, `format:check`, `typecheck`, `test`, `test:watch`, `coverage`, and `verify`.
+- [x] Add `.nvmrc` (`22`), `engines.node >=20`, `.gitignore`, and `.editorconfig`.
+- [x] Create `src/config.ts` with `APP_NAME = 'Forehead Frenzy'`, `ROUND_SECONDS = 60`, `TILT_TRIGGER_DEG = 35`, `TILT_REARM_DEG = 15`, `TILT_COOLDOWN_MS = 500`, `FEEDBACK_MS = 600`, `READY_HOLD_MS = 1000`, `SENSOR_TIMEOUT_MS = 1500`, `FINAL_TICK_SECONDS = 10`, and `COUNTDOWN_FROM = 3`.
+- [x] Add a `src/main.ts` stub that renders `APP_NAME`.
+- [x] Add a sanity test `tests/config.test.ts` that checks the constants exist and are sane, for example `REARM < TRIGGER`.
 
 ### Check your work (autonomous)
 ```bash
@@ -56,6 +56,7 @@ BASE_PATH=/headsup/ npm run build && grep -q '/headsup/assets/' dist/index.html
 npm run lint -- --max-warnings=0
 ```
 **Done when:** All three commands exit 0 and the sanity test runs (Vitest reports ≥1 test).
+**Evidence:** `Tests  5 passed (5)` (Test Files 2 passed) — verify green 2026-10-16
 
 ---
 
