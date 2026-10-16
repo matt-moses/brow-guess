@@ -56,6 +56,7 @@ BASE_PATH=/headsup/ npm run build && grep -q '/headsup/assets/' dist/index.html
 npm run lint -- --max-warnings=0
 ```
 **Done when:** All three commands exit 0 and the sanity test runs (Vitest reports ≥1 test).
+
 **Evidence:** `Tests  5 passed (5)` (Test Files 2 passed) — verify green 2026-10-16
 
 ---
@@ -66,24 +67,24 @@ npm run lint -- --max-warnings=0
 **Delivers:** `src/game/shuffle.ts`, `src/game/tilt.ts`, `src/game/normalize.ts`, and `src/game/round.ts`, all fully unit-tested.
 
 ### Tasks
-- [ ] **`shuffle.ts`**: Fisher–Yates with an injectable RNG (`rng: () => number = Math.random`). Returns a new array and does not mutate its input.
-- [ ] **`normalize.ts`** (FR-4): `normalizePitch({beta, gamma, alpha}, screenAngle) → degrees`. Positive means screen toward the floor (correct) and negative means toward the ceiling (pass).
+- [x] **`shuffle.ts`**: Fisher–Yates with an injectable RNG (`rng: () => number = Math.random`). Returns a new array and does not mutate its input.
+- [x] **`normalize.ts`** (FR-4): `normalizePitch({beta, gamma, alpha}, screenAngle) → degrees`. Positive means screen toward the floor (correct) and negative means toward the ceiling (pass).
   - ⚠️ **Gotcha:** In landscape, a phone held upright puts `gamma` near ±90°, and `gamma` **wraps** from +90 to −90 right where the forehead pose sits. Do not use raw `gamma`. Instead, derive the gravity direction from the Euler angles (rotation matrix), then compute the pitch about the screen's long axis. This gives a continuous value across the vertical. Map `screenAngle` 90 (landscape-primary) and 270/−90 (landscape-secondary) to opposite signs. Portrait angles return `null`.
   - Also export `isUprightLandscape(sample, angle)` for the ready-hold check, with a tolerance constant in config.
-- [ ] **`tilt.ts`** (FR-6/7): `createTiltDetector(cfg)` takes `{ push(pitchDeg, tMs): TiltEvent | null, calibrate(neutralDeg), reset() }`.
+- [x] **`tilt.ts`** (FR-6/7): `createTiltDetector(cfg)` takes `{ push(pitchDeg, tMs): TiltEvent | null, calibrate(neutralDeg), reset() }`.
   - Its states are `NEUTRAL → TRIGGERED(correct|pass) → COOLDOWN → NEUTRAL`.
   - It fires once when `|pitch − neutral| > trigger`. It re-arms only when `|Δ| < rearm` **and** `t − triggeredAt ≥ cooldown`.
   - It emits `{type:'correct'|'pass', t}` and also `{type:'rearmed', t}`, so the UI can gate "next word after return to neutral" (AC-2).
-- [ ] **`round.ts`**: `createRound({words, now, roundMs, rng})` takes `{start(), answer('correct'|'pass'), current(), remainingMs(), isOver(), pause(), resume(), results()}`.
+- [x] **`round.ts`**: `createRound({words, now, roundMs, rng})` takes `{start(), answer('correct'|'pass'), current(), remainingMs(), isOver(), pause(), resume(), results()}`.
   - The timer comes from `now()` deltas only (FR-9). Paused time is excluded (FR-10).
   - Exhaustion: when the queue empties, it reshuffles the passed words that are not yet re-shown. If there are none, the round ends early with reason `'exhausted'`.
   - `results()` returns the ordered `[{word, outcome}]` list and `score`.
   - The round guarantees no word is *answered correct* twice. Passed words may reappear only through the exhaustion path.
 
 ### Tests (`tests/game/*.test.ts`)
-- [ ] Shuffle: a permutation of the input (same multiset, no repeats) over 1,000 seeded runs; input not mutated; seeded RNG is deterministic.
-- [ ] Normalize: table tests for landscape-primary vs landscape-secondary giving opposite signs; continuity across the gamma ±90 wrap (sweep a synthetic pose from −60° to +60° pitch and assert monotonic output with no jumps >5° between steps); portrait gives `null`.
-- [ ] Tilt:
+- [x] Shuffle: a permutation of the input (same multiset, no repeats) over 1,000 seeded runs; input not mutated; seeded RNG is deterministic.
+- [x] Normalize: table tests for landscape-primary vs landscape-secondary giving opposite signs; continuity across the gamma ±90 wrap (sweep a synthetic pose from −60° to +60° pitch and assert monotonic output with no jumps >5° between steps); portrait gives `null`.
+- [x] Tilt:
   - Fires at 36° and not at 34°.
   - The pass direction works.
   - Jitter around ±35° (for example 34/36/34/36…) fires **exactly once**.
@@ -92,7 +93,7 @@ npm run lint -- --max-warnings=0
   - Re-arms after both conditions are met.
   - Calibration offset is respected, for example neutral = 10° means a trigger at 46°.
   - Thresholds come from injected config.
-- [ ] Round:
+- [x] Round:
   - Scoring.
   - Ordered results.
   - Timer accuracy with an irregular fake clock (big jumps, simulating dropped frames).
@@ -111,6 +112,8 @@ grep -rnE 'document|window|navigator' src/game && exit 1 || true   # purity guar
 ```
 **Done when:** Verify is green, `src/game` coverage is ≥95% lines and ≥90% branches, and the purity grep finds nothing. Add the purity grep to `verify` as `npm run check:pure`.
 
+**Evidence:** `tests/game` 71 passed; `src/game` coverage 100% lines/branches; check:pure green — 2026-10-16 (357ec3d)
+
 ---
 
 ## Phase 2: Decks & content guard
@@ -119,12 +122,12 @@ grep -rnE 'document|window|navigator' src/game && exit 1 || true   # purity guar
 **Delivers:** 8 original decks of about 60 words each, a typed loader, schema validation, and a trademark guard.
 
 ### Tasks
-- [ ] `src/decks/types.ts`: the `Deck` interface, matching FR-2.
-- [ ] Write 8 JSON decks: `animals`, `food-drink`, `act-it-out`, `sports`, `jobs`, `places-landmarks`, `around-the-house`, and `kids-mix`. Each has about 60 original entries.
+- [x] `src/decks/types.ts`: the `Deck` interface, matching FR-2.
+- [x] Write 8 JSON decks: `animals`, `food-drink`, `act-it-out`, `sports`, `jobs`, `places-landmarks`, `around-the-house`, and `kids-mix`. Each has about 60 original entries.
   - No living celebrities and no brands.
   - Entries should be short enough to read at 1–2 m.
-- [ ] `src/decks/index.ts`: `import.meta.glob('./*.json', { eager: true })` → `Deck[]`, in stable order. Bundling the decks into JS means the service worker precaches them automatically.
-- [ ] `tests/decks.test.ts` (FR-2):
+- [x] `src/decks/index.ts`: `import.meta.glob('./*.json', { eager: true })` → `Deck[]`, in stable order. Bundling the decks into JS means the service worker precaches them automatically.
+- [x] `tests/decks.test.ts` (FR-2):
   - Unique ids.
   - Every field present and well-typed.
   - `color` matches `/^#[0-9a-f]{6}$/i`.
@@ -132,7 +135,7 @@ grep -rnE 'document|window|navigator' src/game && exit 1 || true   # purity guar
   - No duplicate words within a deck, case- and whitespace-insensitive.
   - No empty or whitespace-only entries.
   - Max entry length ≤ 28 chars, so autofit stays legible.
-- [ ] `scripts/check-trademarks.sh` (AC-7):
+- [x] `scripts/check-trademarks.sh` (AC-7):
   - Greps the repo, excluding `node_modules`, `dist`, `.git`, `prd.md`, and `plan.md`, case-insensitively for `heads ?up`, `warner`, `\bWB\b`, and `ellen`.
   - Exits non-zero on a hit.
   - Allow-list the git remote/base-path references to the `headsup` slug only in deploy config, if needed.
@@ -145,6 +148,8 @@ npx vitest run tests/decks.test.ts
 node -e "const d=require('fs').readdirSync('src/decks').filter(f=>f.endsWith('.json'));if(d.length<8)process.exit(1)"
 ```
 **Done when:** All of these pass, with 8 decks of ≥40 (target about 60) unique words each and no brand hits.
+
+**Evidence:** `tests/decks.test.ts` 60 passed; 8 decks × 60 words; brand guard fail/pass proven — 2026-10-16 (e87ad83)
 
 ---
 
