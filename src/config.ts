@@ -5,6 +5,13 @@ export const APP_NAME = 'Brow Guess' as const;
 /** Public URL shared from the results screen; `assets/qr-live-site.svg` encodes it. */
 export const SHARE_URL = 'https://matt-moses.github.io/brow-guess/';
 
+/**
+ * Cloudflare Web Analytics site token (public; it ends up in the page either way).
+ * Empty disables analytics. The beacon only loads on the SHARE_URL host.
+ */
+export const CF_BEACON_TOKEN = '4abecfdb6db542939406baeb59862c62'; // gitleaks:allow (public token)
+export const CF_BEACON_URL = 'https://static.cloudflareinsights.com/beacon.min.js';
+
 /** One-line pitch used by the web app manifest and the description meta tag. */
 export const APP_DESCRIPTION =
   'A party word game: hold the phone to your forehead, tilt down when you get it, tilt up to pass.';

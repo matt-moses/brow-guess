@@ -1,4 +1,5 @@
 import './style.css';
+import { loadAnalytics } from './analytics.ts';
 import { createApp } from './app.ts';
 import { registerPwa } from './pwa.ts';
 import { initInstall } from './ui/install.ts';
@@ -14,4 +15,7 @@ if (root) {
   createApp(root);
 }
 
-if (import.meta.env.PROD) void registerPwa();
+if (import.meta.env.PROD) {
+  void registerPwa();
+  loadAnalytics();
+}

@@ -8,7 +8,7 @@ A party word game for phones: hold the phone to your forehead, let your friends 
 
 Scan the code with a phone camera to open the game. It's handy for passing around at a party.
 
-It is a static, installable web app (PWA) that works offline after the first visit. No accounts, no ads, no tracking.
+It is a static, installable web app (PWA) that works offline after the first visit. No accounts, no ads, no cookies.
 
 ## How to play
 
@@ -144,7 +144,7 @@ Run on real devices before calling a release done. The full sheet with result co
 
 ## Privacy
 
-The app makes no network calls of its own and has no analytics or tracking. After the first load everything is served from the service-worker cache. The only things stored are the last deck you picked and your settings, in `localStorage` on your device. Motion data is used only on the device to detect tilts.
+The live site counts visits with [Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/), which is cookieless and anonymous: it records page views, referrer, country and device type, nothing that identifies you, and it is never loaded in local dev or tests. It has no custom events, so it doesn't see which decks you play or your scores. After the first load everything is served from the service-worker cache. The only things stored are the last deck you picked and your settings, in `localStorage` on your device. Motion data is used only on the device to detect tilts.
 
 ## Credits and license
 

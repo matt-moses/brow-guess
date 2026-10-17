@@ -13,7 +13,8 @@ const GZIP_BUDGET = 150 * 1024;
 
 /**
  * URL literals allowed in built JS: SVG/XML namespaces, Workbox's own doc links, and
- * the app's public address (SHARE_URL: shared from the results screen, never fetched).
+ * the app's public address (SHARE_URL: shared from the results screen, never fetched)
+ * and the Cloudflare Web Analytics beacon (CF_BEACON_URL, loaded only on the live host).
  */
 const URL_ALLOW = [
   /^http:\/\/www\.w3\.org\//,
@@ -24,6 +25,7 @@ const URL_ALLOW = [
   /^https:\/\/developers\.google\.com\/web\/tools\/workbox/,
   /^https:\/\/github\.com\/GoogleChrome\/workbox/,
   /^https:\/\/matt-moses\.github\.io\/brow-guess\/$/,
+  /^https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js$/,
 ];
 
 const failures = [];
