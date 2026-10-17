@@ -13,6 +13,8 @@ const EXPECTED_IDS = [
   'places-landmarks',
   'around-the-house',
   'kids-mix',
+  'gross-and-giggly',
+  'ridiculous-mashups',
   'harry-potter',
   'music',
   'science-space',

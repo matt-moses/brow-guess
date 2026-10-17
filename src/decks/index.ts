@@ -12,6 +12,8 @@ export const DECK_ORDER = [
   'places-landmarks',
   'around-the-house',
   'kids-mix',
+  'gross-and-giggly',
+  'ridiculous-mashups',
   'harry-potter',
   'music',
   'science-space',
