@@ -2,7 +2,7 @@ import { APP_NAME } from '../config.ts';
 import type { Deck } from '../decks/index.ts';
 import type { AppDeps } from '../deps.ts';
 import type { Screen } from '../router.ts';
-import { el } from '../ui/dom.ts';
+import { button, el } from '../ui/dom.ts';
 import { shareFooter } from '../ui/share.ts';
 
 export interface HomeProps {
@@ -10,6 +10,7 @@ export interface HomeProps {
   lastDeckId: string | null;
   /** Called synchronously inside the click gesture. */
   onPick: (deck: Deck) => void;
+  onSettings: () => void;
 }
 
 export const homeScreen: Screen<HomeProps, AppDeps> = {
@@ -39,10 +40,13 @@ export const homeScreen: Screen<HomeProps, AppDeps> = {
       if (isLast) focusTarget = card;
       grid.append(card);
     }
+    const settings = button('⚙\uFE0E', 'settings-btn', { 'aria-label': 'Settings' });
+    settings.addEventListener('click', () => props.onSettings());
     root.append(
       el(
         'main',
         { class: 'screen screen-home' },
+        settings,
         el('h1', { class: 'app-title', text: APP_NAME }),
         el('p', {
           class: 'tagline',

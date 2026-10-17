@@ -33,6 +33,7 @@ Device / OS / browser: ____
 | Airplane mode: offline play after first online visit                                       |                |       |
 | Update toast appears after a new deploy (reopen app once after deploy)                     |                |       |
 | Long words fit on screen without clipping                                                  |                |       |
+| Settings: 30 s round, Sound off and High/Low sensitivity all take effect and persist       |                |       |
 
 ## Android installed PWA
 
@@ -61,6 +62,7 @@ Device / OS / browser: ____
 | Airplane mode: offline play after first online visit                                       |                |       |
 | Update toast appears after a new deploy (reopen app once after deploy)                     |                |       |
 | Long words fit on screen without clipping                                                  |                |       |
+| Settings: 30 s round, Sound off and High/Low sensitivity all take effect and persist       |                |       |
 
 ## iOS Safari (browser)
 
@@ -89,6 +91,7 @@ Device / OS / browser: ____
 | Airplane mode: offline play after first online visit                                       |                |       |
 | Update toast appears after a new deploy (reopen app once after deploy)                     |                |       |
 | Long words fit on screen without clipping                                                  |                |       |
+| Settings: 30 s round, Sound off and High/Low sensitivity all take effect and persist       |                |       |
 
 ## iOS Home Screen app
 
@@ -117,6 +120,7 @@ Device / OS / browser: ____
 | Airplane mode: offline play after first online visit                                       |                |       |
 | Update toast appears after a new deploy (reopen app once after deploy)                     |                |       |
 | Long words fit on screen without clipping                                                  |                |       |
+| Settings: 30 s round, Sound off and High/Low sensitivity all take effect and persist       |                |       |
 
 ## Tuning
 

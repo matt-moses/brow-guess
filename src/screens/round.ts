@@ -1,4 +1,4 @@
-import { FEEDBACK_MS, FINAL_TICK_SECONDS, REARM_GRACE_MS, TILT_TRIGGER_DEG } from '../config.ts';
+import { FEEDBACK_MS, FINAL_TICK_SECONDS, REARM_GRACE_MS } from '../config.ts';
 import type { AppDeps } from '../deps.ts';
 import { HAPTIC } from '../device/haptics.ts';
 import type { Outcome, Round } from '../game/round.ts';
@@ -128,7 +128,7 @@ export const roundScreen: Screen<RoundProps, AppDeps> = {
               pending?.timerDone &&
               !round.isPaused() &&
               deps.now() - pending.timerDoneAt >= REARM_GRACE_MS &&
-              Math.abs(pitch - detector.state().neutralDeg) < TILT_TRIGGER_DEG
+              Math.abs(pitch - detector.state().neutralDeg) < detector.config().triggerDeg
             ) {
               detector.reset();
               detector.calibrate(pitch);

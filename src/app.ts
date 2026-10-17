@@ -5,6 +5,7 @@
  *   home ─tap─► (denied → permission) ─► ready ─hold─► countdown ─► round ─► results
  *                                          └─ no sensor → unsupported
  *   countdown/round ─hidden─► paused ─tap─► countdown (recalibrate) ─► round (resumed)
+ *   home ─⚙─► settings ─done─► home
  */
 import { APP_NAME } from './config.ts';
 import type { Deck } from './decks/index.ts';
@@ -20,7 +21,9 @@ import { permissionScreen } from './screens/permission.ts';
 import { readyScreen } from './screens/ready.ts';
 import { resultsScreen } from './screens/results.ts';
 import { roundScreen } from './screens/round.ts';
+import { settingsScreen } from './screens/settings.ts';
 import { unsupportedScreen } from './screens/unsupported.ts';
+import { loadSettings, saveSettings, SENSITIVITY_TILT } from './settings.ts';
 import type { FitMeasure } from './ui/autofit.ts';
 
 export const LAST_DECK_KEY = 'lastDeckId';
@@ -56,6 +59,13 @@ export function createApp(root: HTMLElement, options: AppOptions = {}): App {
   const { device } = deps;
   const router = createRouter<AppDeps>(root, deps);
   let session: Session | null = null;
+  let settings = loadSettings(deps.storage);
+
+  // Every screen plays sounds through deps.device, so muting here covers them all.
+  const playSound = device.playSound;
+  device.playSound = (name) => {
+    if (settings.sound) playSound(name);
+  };
 
   document.title = APP_NAME;
 
@@ -91,7 +101,23 @@ export function createApp(root: HTMLElement, options: AppOptions = {}): App {
   // --- navigation ---------------------------------------------------------------
   function showHome(): void {
     endSession();
-    router.show(homeScreen, { decks: deps.decks, lastDeckId: lastDeckId(), onPick: startGame });
+    router.show(homeScreen, {
+      decks: deps.decks,
+      lastDeckId: lastDeckId(),
+      onPick: startGame,
+      onSettings: showSettings,
+    });
+  }
+
+  function showSettings(): void {
+    router.show(settingsScreen, {
+      settings,
+      onChange: (next) => {
+        settings = next;
+        saveSettings(deps.storage, next);
+      },
+      onDone: showHome,
+    });
   }
 
   /**
@@ -112,7 +138,7 @@ export function createApp(root: HTMLElement, options: AppOptions = {}): App {
     endSession();
     const s: Session = {
       deck,
-      detector: createTiltDetector(),
+      detector: createTiltDetector(SENSITIVITY_TILT[settings.sensitivity]),
       round: null,
       offVisibility: () => {},
     };
@@ -171,7 +197,7 @@ export function createApp(root: HTMLElement, options: AppOptions = {}): App {
             words: s.deck.words,
             now: deps.now,
             rng: deps.rng,
-            roundMs: deps.roundMs,
+            roundMs: settings.roundSeconds * 1000,
           });
           s.round.start();
         }

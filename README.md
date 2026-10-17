@@ -19,9 +19,11 @@ It is a static, installable web app (PWA) that works offline after the first vis
    - **Tilt down** (screen toward the floor) when you guess it: correct.
    - **Tilt up** (screen toward the ceiling) to pass.
    - Bring the phone back to your forehead to get the next word.
-5. When the 60-second timer runs out, hand the phone around to see the score and every word, then play again or choose another deck.
+5. When the timer runs out (60 seconds by default), hand the phone around to see the score and every word, then play again or choose another deck.
 
 Tip: on iPhone, use **Share → Add to Home Screen** for a fullscreen, offline-ready app.
+
+The ⚙ button on the home screen sets the round length (30 s to 2 min), turns sound on or off, and adjusts tilt sensitivity.
 
 ## Local development
 
@@ -142,7 +144,7 @@ Run on real devices before calling a release done. The full sheet with result co
 
 ## Privacy
 
-The app makes no network calls of its own and has no analytics or tracking. After the first load everything is served from the service-worker cache. The only thing stored is the last deck you picked, in `localStorage` on your device. Motion data is used only on the device to detect tilts.
+The app makes no network calls of its own and has no analytics or tracking. After the first load everything is served from the service-worker cache. The only things stored are the last deck you picked and your settings, in `localStorage` on your device. Motion data is used only on the device to detect tilts.
 
 ## Credits and license
 

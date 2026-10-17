@@ -3,7 +3,6 @@
  * a real default (see defaultDeps); tests replace the clock, RNG, RAF, storage,
  * confirm dialog, decks, or individual device adapters.
  */
-import { ROUND_SECONDS } from './config.ts';
 import { decks as bundledDecks, type Deck } from './decks/index.ts';
 import { playSound, unlockAudio, type SoundName } from './device/audio.ts';
 import {
@@ -43,7 +42,7 @@ export interface DeviceDeps {
   wakeLock: WakeLockController;
 }
 
-/** The subset of Storage the app uses (last-picked deck only, PRD §7.5). */
+/** The subset of Storage the app uses (last-picked deck and settings, PRD §7.5). */
 export interface StorageLike {
   getItem: (key: string) => string | null;
   setItem: (key: string, value: string) => void;
@@ -65,7 +64,6 @@ export interface AppDeps {
   storage: StorageLike | null;
   confirm: ConfirmFn;
   decks: readonly Deck[];
-  roundMs: number;
 }
 
 export type AppDepsInput = Partial<Omit<AppDeps, 'device'>> & { device?: Partial<DeviceDeps> };
@@ -110,6 +108,5 @@ export function resolveDeps(input: AppDepsInput = {}): AppDeps {
     storage: input.storage === undefined ? defaultStorage() : input.storage,
     confirm: input.confirm ?? inPageConfirm,
     decks: input.decks ?? bundledDecks,
-    roundMs: input.roundMs ?? ROUND_SECONDS * 1000,
   };
 }

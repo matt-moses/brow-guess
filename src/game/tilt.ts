@@ -43,6 +43,8 @@ export interface TiltDetector {
   /** Back to NEUTRAL with neutral = 0. */
   reset(): void;
   state(): TiltState;
+  /** The thresholds this detector was created with. */
+  config(): TiltConfig;
 }
 
 /**
@@ -101,5 +103,6 @@ export function createTiltDetector(cfg: Partial<TiltConfig> = {}): TiltDetector 
       neutralDeg = 0;
     },
     state: () => ({ phase, direction, neutralDeg, triggeredAt }),
+    config: () => ({ triggerDeg, rearmDeg, cooldownMs }),
   };
 }
