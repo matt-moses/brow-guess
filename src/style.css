@@ -462,6 +462,41 @@ body {
   background: #fff;
 }
 
+.share-qr-btn {
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  cursor: zoom-in;
+  line-height: 0;
+}
+
+.share-qr-btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Enlarged QR: as big as the viewport allows, in portrait or landscape. */
+.qr-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-large {
+  /* Leave room for the caption and Close button on a landscape phone. */
+  width: min(80vw, calc(100dvh - 200px), 420px);
+  height: auto;
+  aspect-ratio: 1;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.qr-dialog .dialog-msg {
+  margin: 16px 0;
+}
+
 .share-text {
   text-align: left;
 }

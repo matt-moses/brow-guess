@@ -134,6 +134,37 @@ describe('home', () => {
     expect(flow.button('Share link')).toBeTruthy();
   });
 
+  it('tapping the QR code enlarges it; Close, backdrop tap and Escape dismiss it', () => {
+    flow = createFlow();
+    const qr = flow.button('Enlarge QR code');
+    const open = (): HTMLElement => {
+      qr.click();
+      const dialog = document.querySelector<HTMLElement>('.qr-dialog');
+      expect(dialog?.getAttribute('aria-modal')).toBe('true');
+      expect(dialog?.querySelector<HTMLImageElement>('.qr-large')?.alt).toContain(SHARE_URL);
+      return dialog!;
+    };
+    const isClosed = (): void => {
+      expect(document.querySelector('.qr-dialog')).toBeNull();
+      expect(document.activeElement).toBe(qr);
+    };
+
+    open();
+    expect(document.activeElement).toBe(flow.button('Close'));
+    flow.button('Close').click();
+    isClosed();
+
+    open();
+    document.querySelector<HTMLElement>('.dialog-backdrop')!.click();
+    isClosed();
+
+    const dialog = open();
+    dialog.querySelector<HTMLImageElement>('.qr-large')!.click();
+    expect(document.querySelector('.qr-dialog')).not.toBeNull();
+    dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    isClosed();
+  });
+
   it('every deck card is a focusable button with an accessible name', () => {
     flow = createFlow();
     const cards = [...flow.root.querySelectorAll<HTMLElement>('.deck-card')];
