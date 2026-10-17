@@ -14,6 +14,7 @@ const EXPECTED_IDS = [
   'around-the-house',
   'kids-mix',
   'superheroes',
+  'minions',
   'gross-and-giggly',
   'ridiculous-mashups',
   'bible-kids',

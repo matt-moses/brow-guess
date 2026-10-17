@@ -7,7 +7,7 @@ Brow Guess is a phone-on-forehead party word game: a static, offline-first PWA (
 - Run `npm run verify` before committing. It is the same gate CI runs (lint, format, typecheck, purity, brand check, tests, build, dist check). Run `npx prettier --write <files>` on anything you touch.
 - Commit straight to `main` with Conventional Commits (`feat(decks): …`). Pushing to `main` deploys to GitHub Pages.
 - Game logic in `src/game/` must stay DOM-free (`npm run check:pure`).
-- No third-party trademarks anywhere in the repo (`npm run check:brand`, pattern in `scripts/check-trademarks.sh`). Don't name the well-known commercial game this resembles, and avoid brand names (products, stores, games, TV shows) in deck words. The only exceptions are the licensed decks the owner approved: `harry-potter`, `superheroes` and `universal-orlando`.
+- No third-party trademarks anywhere in the repo (`npm run check:brand`, pattern in `scripts/check-trademarks.sh`). Don't name the well-known commercial game this resembles, and avoid brand names (products, stores, games, TV shows) in deck words. The only exceptions are the licensed decks the owner approved: `harry-potter`, `superheroes`, `universal-orlando` and `minions`.
 
 ## Adding a new deck (category)
 
@@ -62,8 +62,8 @@ The game only works if the person guessing can get the word in a few seconds fro
 
 - **Make them guessable.** Use concrete, well-known things. Short phrases are fine, but keep them to 2 to 4 common words. Avoid obscure trivia and long sentences.
 - **Make them easy to clue.** A friend should be able to describe or mime the word without saying it.
-- **Fit the audience.** Write for the deck's target age (for example, `kids-mix`, `superheroes` and `bible-kids` are for young children, `bible-adults` is for grown-ups, while `gross-and-giggly` and `ridiculous-mashups` are pitched at 9 to 11 year olds). Keep everything PG: gross-out humour is fine, but nothing mean, scary or adult.
-- **Write original words.** Don't use brand, product, show or character names (they trip the brand check, date quickly and aren't ours). The owner approved three exceptions: `harry-potter`, `superheroes` and `universal-orlando`. Licensed decks may be shorter than 240 words if good words run out (`universal-orlando` has about 70). Don't add more licensed decks unless the owner asks for one.
+- **Fit the audience.** Write for the deck's target age (for example, `kids-mix`, `superheroes`, `minions` and `bible-kids` are for young children, `bible-adults` is for grown-ups, while `gross-and-giggly` and `ridiculous-mashups` are pitched at 9 to 11 year olds). Keep everything PG: gross-out humour is fine, but nothing mean, scary or adult.
+- **Write original words.** Don't use brand, product, show or character names (they trip the brand check, date quickly and aren't ours). The owner approved four exceptions: `harry-potter`, `superheroes`, `universal-orlando` and `minions`. Licensed decks may be shorter than 240 words if good words run out (`universal-orlando` has about 70, `minions` about 95). Don't add more licensed decks unless the owner asks for one.
 - **Format consistently.** Use Title Case, no trailing punctuation and no emoji inside words.
 - **Keep the description short.** It is one short, upbeat sentence and it shows on the deck card.
-- **Draft in bulk and check.** Draft about 10% more words than you need, cut the weakest and check the list with the tests before committing. Also check the new words against every other deck: no word added today is shared with another deck.
+- **Draft in bulk and check.** Draft about 10% more words than you need, cut the weakest and check the list with the tests before committing. Also check the new words against every other deck: no word added today is shared with another deck. The exception is `minions`: the owner allows it to reuse words from other decks (it is full of banana words on purpose).
