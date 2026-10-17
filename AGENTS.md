@@ -42,7 +42,7 @@ A "deck" is a category on the home screen: one JSON file of words. Players see o
 
 | Rule          | Detail                                                                                                                                                                                                                        |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Word count    | At least 40. Existing decks have **120**; match that.                                                                                                                                                                         |
+| Word count    | At least 40. Existing decks have **240**; match that.                                                                                                                                                                         |
 | Word length   | 28 characters or fewer (the word must fit on a landscape phone in large type).                                                                                                                                                |
 | Duplicates    | None, case- and whitespace-insensitive.                                                                                                                                                                                       |
 | Colour        | `#rrggbb`, with white text contrast of at least 4.5:1 (WCAG AA). Darker shades (Tailwind 700 to 800) usually pass; 500 to 600 often don't.                                                                                    |
@@ -66,4 +66,4 @@ The game only works if the person guessing can get the word in a few seconds fro
 - **Write original words.** Don't use brand, product, show or character names (they trip the brand check, date quickly and aren't ours). `harry-potter` is a legacy exception; don't add more licensed decks.
 - **Format consistently.** Use Title Case, no trailing punctuation and no emoji inside words.
 - **Keep the description short.** It is one short, upbeat sentence and it shows on the deck card.
-- **Draft in bulk and check.** Draft roughly 130 words, cut the weakest and check the list with the tests before committing.
+- **Draft in bulk and check.** Draft roughly 260 words, cut the weakest and check the list with the tests before committing. Also check the new words against every other deck: no word added today is shared with another deck.
