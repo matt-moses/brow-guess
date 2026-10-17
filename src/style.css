@@ -505,6 +505,21 @@ body {
   margin: 0 0 8px;
 }
 
+.install {
+  margin-top: 8px;
+}
+
+/* .btn sets display, which would otherwise beat the hidden attribute. */
+.install[hidden],
+.install [hidden] {
+  display: none;
+}
+
+.share-text .install-hint {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
 /* --- dialog ------------------------------------------------------------- */
 
 .dialog-backdrop {

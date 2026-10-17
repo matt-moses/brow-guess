@@ -1,7 +1,8 @@
-/** Share footer (results and home screens): QR code for the live site plus a share button. */
+/** Share footer (results and home screens): QR code for the live site, a share button and an install button. */
 import qrUrl from '../../assets/qr-live-site.svg?url';
 import { APP_NAME, SHARE_URL } from '../config.ts';
 import { button, el } from './dom.ts';
+import { installControl } from './install.ts';
 
 /** Share the app: the native share sheet where there is one, else copy the link. */
 async function shareApp(btn: HTMLButtonElement): Promise<void> {
@@ -66,6 +67,12 @@ export function shareFooter(): HTMLElement {
     'footer',
     { class: 'share-footer' },
     qr,
-    el('div', { class: 'share-text' }, el('p', { text: `Scan to play ${APP_NAME}` }), share),
+    el(
+      'div',
+      { class: 'share-text' },
+      el('p', { text: `Scan to play ${APP_NAME}` }),
+      share,
+      installControl(),
+    ),
   );
 }
